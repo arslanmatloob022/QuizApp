@@ -1,9 +1,14 @@
 <template>
+  <que-form></que-form>
   <router-view />
 </template>
 <script>
+import QueForm from "./components/QueForm.vue";
 export default {
   name: "App",
+  components: {
+    QueForm,
+  },
 };
 </script>
 
