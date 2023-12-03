@@ -33,7 +33,7 @@
       <div class="result-summary">
         <!-- Attempt heading -->
         <p v-if="!submitted">
-          Mock Questions: {{ correctAnswer }} out of {{ Questions.length }}
+          Mock Questions: {{ markAnswer }} out of {{ Questions.length }}
         </p>
 
         <!-- result heading -->
@@ -292,8 +292,8 @@ export default {
       return this.userAnswers.filter((answer, index) => this.isCorrect(index))
         .length;
     },
-    markanswer() {
-      return this.userAnswers.filter((answer, index) => this.isChecked(index));
+    markAnswer() {
+      return this.userAnswers.find((index) => this.isChecked(index));
     },
   },
   methods: {
@@ -304,7 +304,7 @@ export default {
       return this.userAnswers[index] === this.Questions[index]?.correctAnswer;
     },
     isChecked(index) {
-      return this.userAnswers[index] === this.Questions[index]?.markanswer;
+      return this.userAnswers[index];
     },
   },
 };
@@ -384,14 +384,14 @@ form {
   width: 50%;
 }
 .result-summary {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 .blocks {
   display: inline-block;
   width: 20px;
   height: 10px;
   border-radius: 5px;
-  margin-right: 5px;
+  margin-right: 2px;
   background-color: #f1f1f1;
 }
 
@@ -407,7 +407,7 @@ form {
   width: 20px;
   height: 10px;
   border-radius: 5px;
-  margin-right: 5px;
+  margin-right: 2px;
   background-color: #f1f1f1;
 }
 .checked {
