@@ -2,7 +2,7 @@
   <section>
     <div class="header">
       <div class="logo">
-        <img src="@/assets/logos/bitmap@2x.webp" alt="" />
+        <img src="" alt="" />
       </div>
       <div class="nav">
         <ul>
@@ -21,18 +21,35 @@
             <img src="@/assets/logos/playstore.png" alt="Playstore" />
           </div>
         </div>
-        <button>Sign In</button>
+        <button class="buttons">Sign In</button>
       </div>
     </div>
-    <div class="headings">
-      <h5>Unit # 1:</h5>
-      <h3>Working in the Private Securoty Industry</h3>
+
+    <div class="formheader">
+      <div class="headings">
+        <h5>Unit # 1:</h5>
+        <h3>Working in the Private Securoty Industry</h3>
+      </div>
+      <div class="result-summary">
+        <p>Result: {{ correctAnswer }} out of {{ Questions.length }}</p>
+        <div
+          class="blocks"
+          v-for="(Ques, index) in Questions"
+          :key="index"
+          :class="{ green: isCorrect(index), red: !isCorrect(index) }"
+        ></div>
+      </div>
     </div>
     <form @submit.prevent="submitQuiz">
-      <div v-for="Ques in Questions" :key="Ques.id" class="question">
-        <p v-if="submitted"></p>
-
+      <div v-for="(Ques, index) in Questions" :key="index" class="question">
         <p class="QuesNo">Question#{{ Ques.id }}</p>
+        <p
+          v-if="submitted"
+          class="result"
+          :class="{ correct: isCorrect(index), incorrect: !isCorrect(index) }"
+        >
+          {{ isCorrect(index) ? "Correct" : "incorrect" }}
+        </p>
         <h6>{{ Ques.Question }}</h6>
         <div
           v-for="(option, optionIndex) in Ques.Options"
@@ -50,6 +67,7 @@
           <label :for="`q${index}o${optionIndex}`"> {{ option }}</label>
         </div>
       </div>
+      <button class="buttons" type="submit">Submit and check Answers</button>
     </form>
   </section>
 </template>
@@ -160,9 +178,23 @@ export default {
           correctAnswer: 1,
         },
       ],
-      userAnswers: [],
+      userAnswers: Array.from({ length: 10 }, () => null),
       submitted: false,
     };
+  },
+  computed: {
+    correctAnswer() {
+      return this.userAnswers.filter((answer, index) => this.isCorrect(index))
+        .length;
+    },
+  },
+  methods: {
+    submitQuiz() {
+      this.submitted = true;
+    },
+    isCorrect(index) {
+      return this.userAnswers[index] === this.Questions[index]?.correctAnswer;
+    },
   },
 };
 </script>
@@ -212,25 +244,58 @@ export default {
   align-items: center;
   cursor: pointer;
 }
+form {
+  padding: 0 100px;
+}
 .logos img {
   width: 30px;
   height: 30px;
 }
-.navigators button {
+.buttons {
   padding: 4px 22px;
   height: 40px;
   color: #fff;
   background-color: #003258;
   border-radius: 16px;
+  border: none;
+  transition: all 0.4s ease-in-out;
+}
+.buttons:hover {
+  transform: scale(1.01);
+}
+.formheader {
+  display: flex;
+  justify-content: space-evenly;
 }
 .headings {
   padding: 20px 70px;
   width: 50%;
 }
+.result-summary {
+  margin-top: 30px;
+}
+.blocks {
+  display: inline-block;
+  width: 20px;
+  height: 10px;
+  margin-right: 5px;
+}
 .question {
-  padding: 20px 80px;
+  padding: 20px 10px;
 }
 .options input {
   margin-right: 4px;
+}
+.green {
+  background-color: rgb(15, 88, 0);
+}
+.red {
+  background-color: #990101;
+}
+.correct {
+  color: green;
+}
+.incorrect {
+  color: red;
 }
 </style>
