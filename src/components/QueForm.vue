@@ -2,7 +2,7 @@
   <section>
     <div class="header">
       <div class="logo">
-        <img src="" alt="" />
+        <img src="@/assets/logos/bitmap@2x.png" alt="" />
       </div>
       <div class="nav">
         <ul>
@@ -31,8 +31,28 @@
         <h3>Working in the Private Securoty Industry</h3>
       </div>
       <div class="result-summary">
-        <p>Result: {{ correctAnswer }} out of {{ Questions.length }}</p>
+        <!-- Attempt heading -->
+        <p v-if="!submitted">
+          Mock Questions: {{ correctAnswer }} out of {{ Questions.length }}
+        </p>
+
+        <!-- result heading -->
+        <p v-if="submitted">
+          Result: {{ correctAnswer }} out of {{ Questions.length }}
+        </p>
+
+        <!-- attempts block -->
         <div
+          v-show="!submitted"
+          class="atmp-blocks"
+          v-for="(Ques, index) in Questions"
+          :key="index"
+          :class="{ checked: isChecked(index), uncheck: !isChecked(index) }"
+        ></div>
+
+        <!-- Result block -->
+        <div
+          v-show="submitted"
           class="blocks"
           v-for="(Ques, index) in Questions"
           :key="index"
@@ -69,6 +89,91 @@
       </div>
       <button class="buttons" type="submit">Submit and check Answers</button>
     </form>
+
+    <div class="footer">
+      <div class="footer-head">
+        <div class="foot-logo">
+          <img src="@/assets/logos/bitmap@2x.png" alt="" />
+        </div>
+        <div class="links-logos">
+          <div class="social-links">
+            <img src="@/assets/icons/group-12.webp" alt="" />
+          </div>
+          <div class="social-links">
+            <img src="@/assets/icons/group-13.png" alt="" />
+          </div>
+          <div class="social-links">
+            <img src="@/assets/icons/group-14.png" alt="" />
+          </div>
+          <div class="social-links">
+            <img src="@/assets/icons/group-18.png" alt="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-content row">
+        <div class="content col-lg-6 col-md-6 col-sm-12 col-12">
+          <p>
+            EarnFlex gives me suitable security jobs close to my home around the
+            hours that I prefer. I also get paid 30% higher than before because
+            I am not dealing with so many agencies. This is a very welcome
+            change for me. <br /><br />
+            EarnFlex finds us pre-vetted high calibre resources in minutes and
+            hours, vs days and weeks. Their unique automated shift analytics
+            gives us the peace of mind that workers are conducting their work as
+            expected - this is a significant advantage for any business.EarnFlex
+            finds us pre-vetted high calibre resources in minutes and hours, vs
+            days and weeks. Their unique automated shift analytics gives us the
+            peace of mind that workers are conducting their work as expected -
+            this is a significant advantage for any business.
+            <br />
+            <br />
+            Earnflex Ltd, Unit 1, 137a Molesey Avenue, Surrey, England, KT8 2RY
+            <br />
+
+            EarnFlex™ is a trademark, and EarnFlex Ltd is a company registered
+            in England and Wales with company number 13723923
+          </p>
+        </div>
+        <div class="bars col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="bars-elements row">
+            <div class="bar-col col-lg-4 col-md-6 col-sm-12 col-12">
+              <h6>COMPANY</h6>
+              <a href="#">About Us</a>
+              <a href="#">Contact Us</a>
+              <a href="#">Customer Reviews</a>
+              <a href="#">Security Jobs</a>
+              <a href="#">Blogs</a>
+            </div>
+            <div class="bar-col col-lg-4 col-md-6 col-sm-12 col-12">
+              <h6>QUICK LINKS</h6>
+              <a href="#">Get Licensed</a>
+              <a href="#">Contact Us</a>
+              <a href="#">Mobile App</a>
+              <a href="#">Privacy policy</a>
+              <a href="#">Term and Conditions</a>
+            </div>
+            <div class="bar-col col-lg-4 col-md-6 col-sm-12 col-12">
+              <h6>PARTNERS</h6>
+              <a href="#">Become a Partner</a>
+              <a href="#">Become a Security Trainer</a>
+              <a href="#">Pricing</a>
+              <a href="#">How Can I Get SIA Licence</a>
+              <a href="#">How to Find a Security Job</a>
+            </div>
+          </div>
+          <div class="trusted-comp col-lg-12 col-md-12 col-sm-12 col-12">
+            <img src="@/assets/TrustedCompanies/asset-1.png" alt="" />
+            <img src="@/assets/TrustedCompanies/group-34.png" alt="" />
+            <img src="@/assets/TrustedCompanies/group-53.png" alt="" />
+            <img src="@/assets/TrustedCompanies/group-92.png" alt="" />
+            <img src="@/assets/TrustedCompanies/group-53.png" alt="" />
+            <img src="@/assets/TrustedCompanies/image-1.png" alt="" />
+            <img src="@/assets/TrustedCompanies/group-44.png" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -187,6 +292,9 @@ export default {
       return this.userAnswers.filter((answer, index) => this.isCorrect(index))
         .length;
     },
+    markanswer() {
+      return this.userAnswers.filter((answer, index) => this.isChecked(index));
+    },
   },
   methods: {
     submitQuiz() {
@@ -194,6 +302,9 @@ export default {
     },
     isCorrect(index) {
       return this.userAnswers[index] === this.Questions[index]?.correctAnswer;
+    },
+    isChecked(index) {
+      return this.userAnswers[index] === this.Questions[index]?.markanswer;
     },
   },
 };
@@ -246,6 +357,7 @@ export default {
 }
 form {
   padding: 0 100px;
+  margin-bottom: 40px;
 }
 .logos img {
   width: 30px;
@@ -278,7 +390,31 @@ form {
   display: inline-block;
   width: 20px;
   height: 10px;
+  border-radius: 5px;
   margin-right: 5px;
+  background-color: #f1f1f1;
+}
+
+.green {
+  background-color: green;
+}
+.red {
+  background-color: red;
+}
+
+.atmp-blocks {
+  display: inline-block;
+  width: 20px;
+  height: 10px;
+  border-radius: 5px;
+  margin-right: 5px;
+  background-color: #f1f1f1;
+}
+.checked {
+  background-color: #044374;
+}
+.uncheck {
+  background-color: #d8d8d8;
 }
 .question {
   padding: 20px 10px;
@@ -286,16 +422,116 @@ form {
 .options input {
   margin-right: 4px;
 }
-.green {
-  background-color: rgb(15, 88, 0);
-}
-.red {
-  background-color: #990101;
-}
+
 .correct {
   color: green;
 }
 .incorrect {
   color: red;
+}
+/* footer styling */
+.footer {
+  margin: 0;
+  border-radius: 22px;
+  padding: 40px 160px;
+  background-color: #003258;
+}
+.foot-logo {
+  padding: 6px;
+  border-radius: 24px;
+  background-color: #fff;
+}
+.footer-head {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+.links-logos {
+  display: flex;
+  gap: 10px;
+}
+.footer-content {
+  margin: 24px 0;
+}
+.content {
+  padding-left: 10px;
+  padding-right: 60px;
+  color: #fff;
+}
+.bars-elements {
+  margin-top: 10px;
+  color: #fff;
+}
+.bar-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bar-col h6 {
+  margin-bottom: 16px;
+}
+.bar-col a {
+  text-decoration: none;
+  color: #fff;
+}
+.bar-col ul li {
+  margin-left: 0;
+  text-align: left;
+}
+.trusted-comp {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+@media screen and (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+  .formheader {
+    display: flex;
+    flex-direction: column;
+  }
+  .result-summary {
+    margin: 24px;
+  }
+  .headings {
+    padding: 10px 20px;
+    width: 100%;
+  }
+  .result-summary {
+    margin-top: 30px;
+  }
+  form {
+    padding: 0 16px;
+    margin-bottom: 30px;
+  }
+  .footer {
+    margin: 0;
+    border-radius: 22px;
+    padding: 40px 60px;
+    background-color: #003258;
+  }
+  .footer-head {
+    flex-direction: column;
+  }
+  .bars-elements {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  .bar-col {
+    margin-bottom: 30px;
+    align-items: center;
+  }
+  .bar-col h6 {
+    margin-bottom: 10px;
+  }
+  .trusted-comp {
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+  }
 }
 </style>
