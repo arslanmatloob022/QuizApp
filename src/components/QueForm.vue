@@ -556,6 +556,9 @@ form {
     display: flex;
     flex-direction: column;
   }
+  .stores {
+    display: none;
+  }
   .result-summary {
     margin: 24px;
   }
