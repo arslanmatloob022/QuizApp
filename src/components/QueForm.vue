@@ -50,8 +50,8 @@
           :class="{
             checked: isChecked(index),
             uncheck: !isChecked(index),
-            green: isCorrect(index),
-            red: !isCorrect(index),
+            green: submitted && isCorrect(index),
+            red: submitted && !isCorrect(index),
           }"
         ></div>
 
@@ -61,13 +61,16 @@
           class="blocks"
           v-for="(Ques, index) in Questions"
           :key="index"
-          :class="{ green: isCorrect(index), red: !isCorrect(index) }"
+          :class="{
+            green: submitted && isCorrect(index),
+            red: !isCorrect(index),
+          }"
         ></div>
       </div>
     </div>
     <form @submit.prevent="submitQuiz">
       <div v-for="(Ques, index) in Questions" :key="index" class="question">
-        <p class="QuesNo">Question#{{ Ques.id }}</p>
+        <p v-show="!submitted" class="QuesNo">Question#{{ Ques.id }}</p>
         <p
           v-if="submitted"
           class="result"
@@ -87,10 +90,30 @@
             :name="`q${index}`"
             :value="optionIndex"
             v-model="userAnswers[index]"
-            :disabled="submitted"
-            :class="{ green: isCorrect(index), red: !isCorrect(index) }"
+            :class="{
+              radiocorrect: isCorrect(index),
+              radioincorrect:
+                submitted &&
+                !isCorrect(index) &&
+                userAnswers[index] === optionIndex,
+            }"
           />
-          <label :for="`q${index}o${optionIndex}`"> {{ option }}</label>
+          <label
+            :for="`q${index}o${optionIndex}`"
+            :class="{
+              selected: userAnswers[index] === optionIndex,
+              correct:
+                submitted &&
+                isCorrect(index) &&
+                userAnswers[index] === optionIndex,
+              incorrect:
+                submitted &&
+                !isCorrect(index) &&
+                userAnswers[index] === optionIndex,
+            }"
+          >
+            {{ option }}</label
+          >
         </div>
       </div>
       <button class="buttons" type="submit">
@@ -375,6 +398,16 @@ form {
   padding: 0 100px;
   margin-bottom: 40px;
 }
+
+.selected {
+  font-weight: 600;
+}
+.marked {
+  font-weight: 600;
+}
+.unmarked {
+  color: black;
+}
 .logos img {
   width: 30px;
   height: 30px;
@@ -420,6 +453,14 @@ form {
   background-color: red;
 }
 
+.radiocorrect {
+  background-color: green;
+  border-color: green;
+}
+.radioincorrect {
+  background-color: red;
+  border-color: red;
+}
 .atmp-blocks {
   display: inline-block;
   width: 20px;
@@ -446,6 +487,9 @@ form {
 }
 .incorrect {
   color: red;
+}
+.indicate {
+  color: green;
 }
 /* footer styling */
 .footer {
