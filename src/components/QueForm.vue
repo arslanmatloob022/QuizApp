@@ -47,7 +47,12 @@
           class="atmp-blocks"
           v-for="(Ques, index) in Questions"
           :key="index"
-          :class="{ checked: isChecked(index), uncheck: !isChecked(index) }"
+          :class="{
+            checked: isChecked(index),
+            uncheck: !isChecked(index),
+            green: isCorrect(index),
+            red: !isCorrect(index),
+          }"
         ></div>
 
         <!-- Result block -->
@@ -83,11 +88,15 @@
             :value="optionIndex"
             v-model="userAnswers[index]"
             :disabled="submitted"
+            :class="{ green: isCorrect(index), red: !isCorrect(index) }"
           />
           <label :for="`q${index}o${optionIndex}`"> {{ option }}</label>
         </div>
       </div>
-      <button class="buttons" type="submit">Submit and check Answers</button>
+      <button class="buttons" type="submit">
+        Submit and check Answers
+        <span><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+      </button>
     </form>
 
     <div class="footer">
@@ -293,7 +302,8 @@ export default {
         .length;
     },
     markAnswer() {
-      return this.userAnswers.find((index) => this.isChecked(index));
+      return this.userAnswers.filter((answer, index) => this.isChecked(index))
+        .length;
     },
   },
   methods: {
@@ -304,7 +314,15 @@ export default {
       return this.userAnswers[index] === this.Questions[index]?.correctAnswer;
     },
     isChecked(index) {
-      return this.userAnswers[index];
+      if (this.userAnswers[index] === 0) {
+        return 1;
+      } else if (this.userAnswers[index] === 1) {
+        return 1;
+      } else if (this.userAnswers[index] === 2) {
+        return 1;
+      } else if (this.userAnswers[index] === 3) {
+        return 1;
+      }
     },
   },
 };
@@ -396,9 +414,11 @@ form {
 }
 
 .green {
+  color: green;
   background-color: green;
 }
 .red {
+  color: red;
   background-color: red;
 }
 
