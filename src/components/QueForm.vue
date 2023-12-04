@@ -132,9 +132,7 @@
             gives us the peace of mind that workers are conducting their work as
             expected - this is a significant advantage for any business.EarnFlex
             finds us pre-vetted high calibre resources in minutes and hours, vs
-            days and weeks. Their unique automated shift analytics gives us the
-            peace of mind that workers are conducting their work as expected -
-            this is a significant advantage for any business.
+            days and weeks.
             <br />
             <br />
             Earnflex Ltd, Unit 1, 137a Molesey Avenue, Surrey, England, KT8 2RY
